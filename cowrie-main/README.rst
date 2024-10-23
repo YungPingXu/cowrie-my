@@ -93,6 +93,8 @@ Proxy 模式 (Backend Pool)
 下載官方提供的 image - ubuntu18.04-minimal.qcow2
 
 https://drive.google.com/open?id=1ZNE57lzaGWR427XxynqUVJ_2anTKmFmh
+(連結已失效 用下面的)
+https://drive.google.com/drive/folders/1-bvEYMDO6voa6Y8tA42w9kjobpuzQIB6?usp=drive_link
 
 放到 ./cowrie-imgs 資料夾
 
