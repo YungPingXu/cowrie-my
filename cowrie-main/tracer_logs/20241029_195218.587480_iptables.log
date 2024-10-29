@@ -1,7 +1,0 @@
-20241029_195218.587799 iptables   DEBUG      Server is listening on "127.0.0.1:6417".
-20241029_195243.015008 iptables   DEBUG      Connected from 127.0.0.1:60892.
-20241029_195521.100472 iptables   DEBUG      Cleaning created rules ...
-20241029_195521.100545 iptables   DEBUG      Cleaning created rules ... Done
-20241029_195534.499569 iptables   DEBUG      User stop the server.
-20241029_195534.814078 iptables   DEBUG      Cleaning created rules ...
-20241029_195534.814158 iptables   DEBUG      Cleaning created rules ... Done
