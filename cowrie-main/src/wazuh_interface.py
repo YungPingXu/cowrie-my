@@ -125,8 +125,8 @@ class WazuhInterface:
         if not bypass_vm_id:
             assert 0 <= vm_id < self.vm_size
 
-        proxy = self.target_con.get_transport().open_channel('direct-tcpip', (vm_ip, 22), ('127.0.0.1', 22))
-
+        #proxy = self.target_con.get_transport().open_channel('direct-tcpip', (vm_ip, 22), ('127.0.0.1', 22))
+        proxy = self.target_con.get_transport().open_channel('direct-tcpip', (vm_ip, 21498), ('127.0.0.1', 0))
         qvm = SSHClient()
         qvm.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
@@ -183,6 +183,7 @@ class WazuhInterface:
         if not bypass_vm_id:
             qvm: SSHClient = self.all_vm[vm_id]['con'][1]
         else:
+            log.msg(vm_ip)
             proxy, qvm = self.init_vm_connection(vm_ip, bypass_vm_id)
 
         for i, command in enumerate(commands):
@@ -227,8 +228,9 @@ class WazuhInterface:
 
 
     def is_file_on_target(self, filename: str) -> bool:
-
+        print(filename)
         stdin, stdout, stderr = self.target_con.exec_command(f'if [[ -f "{filename}" ]]; then echo True; else echo False; fi')
+        print(stdin, stdout, stderr)
         is_file_exists = True if stdout.read().decode().strip() == 'True' else False
 
         return is_file_exists
@@ -251,12 +253,13 @@ class WazuhInterface:
 
 
     def scan_vm(self, vm_ip: str = '') -> List[str]:
-
+        log.msg(vm_ip)
         if len(vm_ip) == 0:
-            stdin, stdout, stderr = self.target_con.exec_command('nmap -sn 192.168.4.0/24')
+            #stdin, stdout, stderr = self.target_con.exec_command('nmap -sn 192.168.4.0/24')
+            stdin, stdout, stderr = self.target_con.exec_command('nmap -sn 192.168.56.108/24')
         else:
             stdin, stdout, stderr = self.target_con.exec_command(f'nmap -sn {vm_ip}/32')
-
+        log.msg(stdin, stdout, stderr)
         scanned = [line for line in stdout.read().decode().split('\n') if len(line) > 0]
         hosts = scanned[1:-1][::2]
         hosts = [host.replace('Nmap scan report for ', '') for host in hosts]
@@ -266,10 +269,11 @@ class WazuhInterface:
 
 
     def update_vm(self, vm_ip: str = '') -> int:
-
+        log.msg(vm_ip)
         if len(vm_ip) == 0:
             log.msg('Scanning vm in the local network 192.168.4.0/24 .')
             vm_ips = self.scan_vm()
+            log.msg(vm_ip)
 
             if len(vm_ips) > self.vm_size:
                 log.msg(f'There are {len(vm_ips)} VMs up on the system. However, we need only {self.vm_size}.')
@@ -457,7 +461,8 @@ class WazuhInterface:
 
     def create_vm(self, vm_id: int) -> None:
 
-        self.target_con.exec_command(f'screen -d -m sudo qemu-system-x86_64 -name qvm{vm_id} -smbios type=0,uefi=on -enable-kvm -smp 1 -m 1024 -hda /home/user/qvm{vm_id}.qcow2 -boot c -netdev bridge,br=br0,id=net0 -device e1000,netdev=net0,mac=52:54:00:12:43:{vm_id:02x} -vnc 0.0.0.0:{vm_id}')
+        #self.target_con.exec_command(f'screen -d -m sudo qemu-system-x86_64 -name qvm{vm_id} -smbios type=0,uefi=on -enable-kvm -smp 1 -m 1024 -hda /home/user/qvm{vm_id}.qcow2 -boot c -netdev bridge,br=br0,id=net0 -device e1000,netdev=net0,mac=52:54:00:12:43:{vm_id:02x} -vnc 0.0.0.0:{vm_id}')
+        self.target_con.exec_command(f'screen -d -m sudo qemu-system-x86_64 -name qvm{vm_id} -smbios type=0,uefi=on -smp 2 -m 4096 -hda /home/user/qvm{vm_id}.qcow2 -boot c')
 
 
     def shutdown_vm(self, vm_id: int) -> None:
@@ -659,10 +664,10 @@ class WazuhInterface:
                     if resp == -1:
                         while True:
                             vm_id = randint(0, self.vm_size - 1)
-                            
+
                             if len(self.all_vm[vm_id]['ip']) > 0:
                                 break
-                        
+
                         self.all_vm[vm_id]['attacker_ip'].append(attacker_ip)
                         log.msg(f'Assigned used vm{vm_id} with {self.all_vm[vm_id]["ip"]} to new attacker {attacker_ip}.')
                         resp = vm_id
@@ -674,7 +679,7 @@ class WazuhInterface:
             log.err(f'Invalid attacker ip {attacker_ip} .')
 
         self.log_all_vm()
-        
+
         return resp
 
 
@@ -701,8 +706,8 @@ class WazuhInterface:
             self.all_vm[vm_id]['attacker_ip'].clear()
             self.all_vm[vm_id]['con'].clear()
             self.all_vm[vm_id]['indexer_last_hit'] = datetime.now()
-            
-            
+
+
     def count_alive_vm(self) -> int:
 
         counter = 0
@@ -710,7 +715,7 @@ class WazuhInterface:
         for vm in self.all_vm:
             if len(vm['ip']) > 0:
                 counter += 1
-                
+
         return counter
 
 

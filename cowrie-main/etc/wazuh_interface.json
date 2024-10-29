@@ -1,30 +1,30 @@
 {
     "target": {
-        "ip": "192.168.3.4",
+        "ip": "192.168.56.108",
         "port": 22,
-        "username": "",
-        "password": ""
+        "username": "user",
+        "password": "890228"
     },
     "provider": {
-        "ip": "192.168.3.3",
+        "ip": "192.168.56.108",
         "port": 55000,
-        "username": "wazuh",
-        "password": ""
+        "username": "admin",
+        "password": "HnDParEhVw7bXlVp5T8PQ4z12i+BTeGp"
     },
     "indexer": {
-        "ip": "192.168.3.3",
+        "ip": "192.168.56.108",
         "port": 9200,
         "username": "admin",
-        "password": ""
+        "password": "HnDParEhVw7bXlVp5T8PQ4z12i+BTeGp"
     },
     "vm": {
-        "size": 3,
+        "size": 1,
         "destroy_before_start": false,
         "destroy_before_stop": false,
-        "username": "",
-        "password": "",
+        "username": "root",
+        "password": "root",
         "network_interface": "ens3",
-        "base_image": "/some/path/ubuntu22.04.qcow2"
+        "base_image": "/home/user/ubuntu18.04-minimal.qcow2"
     },
     "wazuh_agent_install": ["wget https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_4.7.3-1_amd64.deb && WAZUH_MANAGER='192.168.3.3' WAZUH_AGENT_NAME=$(cat /etc/machine-id) dpkg -i ./wazuh-agent_4.7.3-1_amd64.deb && rm ./wazuh-agent_4.7.3-1_amd64.deb",
                             "systemctl daemon-reload; systemctl enable wazuh-agent; systemctl start wazuh-agent"]

@@ -1,0 +1,4 @@
+20241029_195535.562964 iptables   DEBUG      Server is listening on "127.0.0.1:6417".
+20241029_195537.492682 iptables   DEBUG      User stop the server.
+20241029_195537.573271 iptables   DEBUG      Cleaning created rules ...
+20241029_195537.573365 iptables   DEBUG      Cleaning created rules ... Done

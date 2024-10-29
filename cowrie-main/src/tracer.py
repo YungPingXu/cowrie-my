@@ -16,7 +16,7 @@ from engage_action import ACTION_LEN
 
 DATETIME_FORMAT = '%Y%m%d_%H%M%S.%f'
 DEFAULT_BASE_DIR = '/home/user/Desktop/'
-
+os.environ['COWRIE_BASE_PATH'] = os.path.abspath('../cowrie-main')
 
 def is_valid_datetime(datetime_string: str) -> bool:
     try:
@@ -190,6 +190,8 @@ class GroupLog:
 
 class Tracer:
     LOGGING_PATH = Path(os.environ['COWRIE_BASE_PATH']).parent / Path('tracer_logs')
+    #print(os.environ['COWRIE_BASE_PATH'])
+    #print(LOGGING_PATH)
 
     @staticmethod
     def create_log_dir() -> None:
