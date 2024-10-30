@@ -214,7 +214,6 @@ class Tracer:
             local_datetime = datetime.now()
             internet_datetime = datetime.strptime(req.text.strip(), '%Y-%m-%d %H:%M:%S') + timedelta(hours=8)
             diff = (internet_datetime - local_datetime).total_seconds()
-
             # The difference should be less than or equal to 5 seconds.
             return diff <= 5
 

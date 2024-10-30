@@ -125,8 +125,7 @@ class WazuhInterface:
         if not bypass_vm_id:
             assert 0 <= vm_id < self.vm_size
 
-        #proxy = self.target_con.get_transport().open_channel('direct-tcpip', (vm_ip, 22), ('127.0.0.1', 22))
-        proxy = self.target_con.get_transport().open_channel('direct-tcpip', (vm_ip, 21498), ('127.0.0.1', 0))
+        proxy = self.target_con.get_transport().open_channel('direct-tcpip', (vm_ip, 22), ('127.0.0.1', 22))
         qvm = SSHClient()
         qvm.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
@@ -255,8 +254,7 @@ class WazuhInterface:
     def scan_vm(self, vm_ip: str = '') -> List[str]:
         log.msg(vm_ip)
         if len(vm_ip) == 0:
-            #stdin, stdout, stderr = self.target_con.exec_command('nmap -sn 192.168.4.0/24')
-            stdin, stdout, stderr = self.target_con.exec_command('nmap -sn 192.168.56.108/24')
+            stdin, stdout, stderr = self.target_con.exec_command('nmap -sn 192.168.4.0/24')
         else:
             stdin, stdout, stderr = self.target_con.exec_command(f'nmap -sn {vm_ip}/32')
         log.msg(stdin, stdout, stderr)

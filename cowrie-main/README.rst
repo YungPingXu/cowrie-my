@@ -14,7 +14,7 @@ Fix Bugs
 
 安裝必要套件::
 
-    sudo apt-get install git python3-virtualenv libssl-dev libffi-dev build-essential libpython3-dev python3-minimal authbind virtualenv
+    sudo apt-get install python3-venv libssl-dev libffi-dev build-essential libpython3-dev python3-minimal authbind qemu qemu-system-arm qemu-system-x86 libvirt-dev libvirt-daemon libvirt-daemon-system libvirt-clients nmap screen
     python3 -m venv cowrie-env
     source cowrie-env/bin/activate
 
@@ -52,16 +52,12 @@ Fix Bugs
 ./etc/userdb.txt 裡面已添加了帳密::
 
     root:x:asd1234
-    citrus:x:1234
+    user:x:1234
 
 必須要用裡面的帳密組合(可自行修改)才可成功登入，而不是像原本預設的帳密亂打也能進來
 
 Proxy 模式 (Backend Pool)
 *****************************************
-
-安裝必要套件::
-
-    sudo apt-get install qemu qemu-system-arm qemu-system-x86 libvirt-dev libvirt-daemon libvirt-daemon-system libvirt-clients nmap
 
 讓使用者可以執行 libvirt::
 
@@ -75,8 +71,8 @@ Proxy 模式 (Backend Pool)
 
 修改 user 和 group 的值::
 
-    user = [your_username]
-    group = [your_username]
+    user = "root"
+    group = "root"
 
 接著重啟 libvirt::
 

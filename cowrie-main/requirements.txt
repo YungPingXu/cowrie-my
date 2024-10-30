@@ -14,7 +14,10 @@ tftpy==0.8.2
 treq==22.2.0
 twisted==23.8.0
 libvirt-python # add for backend pool
+
 paramiko
 validators
+# pip3 install torch --index-url https://download.pytorch.org/whl/cu121
 numpy
 matplotlib
+transformers
