@@ -271,7 +271,7 @@ class WazuhInterface:
         if len(vm_ip) == 0:
             log.msg('Scanning vm in the local network 192.168.4.0/24 .')
             vm_ips = self.scan_vm()
-            log.msg(vm_ip)
+            log.msg(vm_ips)
 
             if len(vm_ips) > self.vm_size:
                 log.msg(f'There are {len(vm_ips)} VMs up on the system. However, we need only {self.vm_size}.')
@@ -440,7 +440,6 @@ class WazuhInterface:
     def get_vm_agentId(self, vm_ip: str) -> int:
 
         agent_id = -1
-
         if len(vm_ip) != '':
             req = requests.get(f'https://{self.provider["ip"]}:{self.provider["port"]}/security/user/authenticate?raw=true', auth=HTTPBasicAuth(self.provider['username'], self.provider['password']), verify=False)
 
@@ -460,7 +459,7 @@ class WazuhInterface:
     def create_vm(self, vm_id: int) -> None:
 
         #self.target_con.exec_command(f'screen -d -m sudo qemu-system-x86_64 -name qvm{vm_id} -smbios type=0,uefi=on -enable-kvm -smp 1 -m 1024 -hda /home/user/qvm{vm_id}.qcow2 -boot c -netdev bridge,br=br0,id=net0 -device e1000,netdev=net0,mac=52:54:00:12:43:{vm_id:02x} -vnc 0.0.0.0:{vm_id}')
-        self.target_con.exec_command(f'screen -d -m sudo qemu-system-x86_64 -name qvm{vm_id} -smbios type=0,uefi=on -smp 2 -m 4096 -hda /home/user/qvm{vm_id}.qcow2 -boot c')
+        self.target_con.exec_command(f'screen -d -m sudo qemu-system-x86_64 -name qvm{vm_id} -smbios type=0,uefi=on -smp 2 -m 4096 -hda /home/user/qvm{vm_id}.qcow2 -boot c -netdev bridge,br=br0,id=net0 -device e1000,netdev=net0,mac=52:54:00:12:43:{vm_id:02x} -vnc 0.0.0.0:{vm_id}')
 
 
     def shutdown_vm(self, vm_id: int) -> None:
@@ -568,13 +567,14 @@ class WazuhInterface:
         # Create and start vms.
         running_vms = len(self.list_vm())
         log.msg(f'Found {running_vms} running vm.')
-
+        log.msg(3)
         if running_vms < self.vm_size:
             create_vm_size = self.vm_size - running_vms
             log.msg(f'Created {create_vm_size} vm.')
-
+            log.msg(1)
             for i in range(create_vm_size):
                 self.create_vm(running_vms + i)
+                log.msg(2)
 
         # Check vms are booting.
         while True:
@@ -598,6 +598,7 @@ class WazuhInterface:
 
                             # It takes about 20 seconds to let new agent establish new connection with provider.
                             sleep(30)
+                            log.msg("123", vm['ip'])
                             vm['agent_id'] = self.get_vm_agentId(vm['ip'])
 
                             if vm['agent_id'] == -1:
