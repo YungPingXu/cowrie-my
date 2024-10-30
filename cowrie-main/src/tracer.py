@@ -222,7 +222,7 @@ class Tracer:
 
     def __init__(self, app_name: str) -> None:
 
-        assert Tracer.validate_datetime(), 'Please check your computer datetime/timezone setting.'
+        #assert Tracer.validate_datetime(), 'Please check your computer datetime/timezone setting.'
 
         self.app_name = app_name
         self.log_filename = str(Tracer.LOGGING_PATH / Path(f'{Tracer.current_datetime()}_{self.app_name}.log'))

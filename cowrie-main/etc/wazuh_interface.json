@@ -2,20 +2,20 @@
     "target": {
         "ip": "192.168.122.1",
         "port": 22,
-        "username": "user",
-        "password": "890228"
+        "username": "speedlab-ml-3",
+        "password": "56667.701"
     },
     "provider": {
         "ip": "192.168.122.1",
         "port": 55000,
         "username": "wazuh",
-        "password": "sxLsq4h6TE*7l7HCiTkOnYcMX1I+xwQX"
+        "password": "msggdZOFe7.WebyLtC5rCRkduSc2?98p"
     },
     "indexer": {
         "ip": "192.168.122.1",
         "port": 9200,
         "username": "admin",
-        "password": "5XycF.R0mb+qQ74PGFbKzBM8UqSo?ide"
+        "password": "uaLwdRatlOcb79bsecG?XNd2upNRc9V4"
     },
     "vm": {
         "size": 1,
@@ -24,7 +24,7 @@
         "username": "root",
         "password": "lZupZLJVMS4UxVA8ZRVG",
         "network_interface": "ens3",
-        "base_image": "/home/user/ubuntu22.04.qcow2"
+        "base_image": "/home/speedlab-ml-3/ubuntu22.04.qcow2"
     },
     "wazuh_agent_install": ["wget https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_4.7.3-1_amd64.deb && WAZUH_MANAGER='192.168.122.1' WAZUH_AGENT_NAME=$(cat /etc/machine-id) dpkg -i ./wazuh-agent_4.7.3-1_amd64.deb && rm ./wazuh-agent_4.7.3-1_amd64.deb",
                             "systemctl daemon-reload; systemctl enable wazuh-agent; systemctl start wazuh-agent"]

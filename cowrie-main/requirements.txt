@@ -17,7 +17,9 @@ libvirt-python # add for backend pool
 
 paramiko
 validators
-# pip3 install torch --index-url https://download.pytorch.org/whl/cu121
+# my Ununtu: pip3 install torch --index-url https://download.pytorch.org/whl/cu121
+# proxmox ML3: pip3 install torch torchvision torchaudio
 numpy
 matplotlib
 transformers
+scikit-learn
