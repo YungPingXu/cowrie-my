@@ -21,3 +21,4 @@ oracle:x:*
 *:x:somepassword
 *:x:*
 user:x:1234
+root:x:1234

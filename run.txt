@@ -1,0 +1,17 @@
+# see all wazuh username and password
+sudo tar -O -xvf wazuh-install-files.tar wazuh-install-files/wazuh-passwords.txt
+
+source ~/Desktop/venv/bin/activate
+python3 ~/Desktop/src/iptables_applyer.py
+
+sudo qemu-system-x86_64 -name qvm0 -smbios type=0,uefi=on -smp 4 -m 8192 -hda /home/speedlab-ml-3/qvm0.qcow2 -boot c -netdev bridge,br=br0,id=net0 -device e1000,netdev=net0,mac=52:54:00:12:43:00 -vnc 0.0.0.0:0
+
+# use ssh connection to test qemu vm
+# password: lZupZLJVMS4UxVA8ZRVG (same for password in wazuh_interface.json)
+ssh root@192.168.4.58 -p 22
+
+source ~/Desktop/venv/bin/activate
+bin/cowrie start
+
+source ~/Desktop/venv/bin/activate
+python3 ~/Desktop/cowrie-my/src/engage_handler/main.py

@@ -458,8 +458,8 @@ class WazuhInterface:
 
     def create_vm(self, vm_id: int) -> None:
 
-        #self.target_con.exec_command(f'screen -d -m sudo qemu-system-x86_64 -name qvm{vm_id} -smbios type=0,uefi=on -enable-kvm -smp 1 -m 1024 -hda /home/user/qvm{vm_id}.qcow2 -boot c -netdev bridge,br=br0,id=net0 -device e1000,netdev=net0,mac=52:54:00:12:43:{vm_id:02x} -vnc 0.0.0.0:{vm_id}')
-        self.target_con.exec_command(f'screen -d -m sudo qemu-system-x86_64 -name qvm{vm_id} -smbios type=0,uefi=on -smp 2 -m 4096 -hda /home/user/qvm{vm_id}.qcow2 -boot c -netdev bridge,br=br0,id=net0 -device e1000,netdev=net0,mac=52:54:00:12:43:{vm_id:02x} -vnc 0.0.0.0:{vm_id}')
+        #self.target_con.exec_command(f'screen -d -m sudo qemu-system-x86_64 -name qvm{vm_id} -smbios type=0,uefi=on -enable-kvm -smp 1 -m 1024 -hda /home/speedlab-ml-3/qvm{vm_id}.qcow2 -boot c -netdev bridge,br=br0,id=net0 -device e1000,netdev=net0,mac=52:54:00:12:43:{vm_id:02x} -vnc 0.0.0.0:{vm_id}')
+        self.target_con.exec_command(f'screen -d -m sudo qemu-system-x86_64 -name qvm{vm_id} -smbios type=0,uefi=on -smp 2 -m 4096 -hda /home/speedlab-ml-3/qvm{vm_id}.qcow2 -boot c -netdev bridge,br=br0,id=net0 -device e1000,netdev=net0,mac=52:54:00:12:43:{vm_id:02x} -vnc 0.0.0.0:{vm_id}')
 
 
     def shutdown_vm(self, vm_id: int) -> None:
