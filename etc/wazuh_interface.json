@@ -18,7 +18,7 @@
         "password": "uaLwdRatlOcb79bsecG?XNd2upNRc9V4"
     },
     "vm": {
-        "size": 1,
+        "size": 3,
         "destroy_before_start": false,
         "destroy_before_stop": false,
         "username": "root",

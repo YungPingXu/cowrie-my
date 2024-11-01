@@ -15,6 +15,7 @@ from paramiko.ssh_exception import AuthenticationException
 from paramiko import SSHClient
 from paramiko.channel import Channel
 from twisted.python import log
+import os
 
 urllib3.disable_warnings()
 
@@ -401,7 +402,8 @@ class WazuhInterface:
             vm_pid_str = stdout.read().decode().strip()
 
             if len(vm_pid_str) > 0:
-                vm_pid = int(vm_pid_str)
+                #vm_pid = int(vm_pid_str)
+                vm_pid = int(vm_pid_str.split('\n')[-1])
 
         return vm_pid
 
@@ -457,9 +459,12 @@ class WazuhInterface:
 
 
     def create_vm(self, vm_id: int) -> None:
-
         #self.target_con.exec_command(f'screen -d -m sudo qemu-system-x86_64 -name qvm{vm_id} -smbios type=0,uefi=on -enable-kvm -smp 1 -m 1024 -hda /home/speedlab-ml-3/qvm{vm_id}.qcow2 -boot c -netdev bridge,br=br0,id=net0 -device e1000,netdev=net0,mac=52:54:00:12:43:{vm_id:02x} -vnc 0.0.0.0:{vm_id}')
-        self.target_con.exec_command(f'screen -d -m sudo qemu-system-x86_64 -name qvm{vm_id} -smbios type=0,uefi=on -smp 2 -m 4096 -hda /home/speedlab-ml-3/qvm{vm_id}.qcow2 -boot c -netdev bridge,br=br0,id=net0 -device e1000,netdev=net0,mac=52:54:00:12:43:{vm_id:02x} -vnc 0.0.0.0:{vm_id}')
+        
+        wazuh_interface_json = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'etc/wazuh_interface.json')
+        with open(wazuh_interface_json, encoding='utf-8') as f:
+            sudo_password = json.load(f)['target']['password']
+        self.target_con.exec_command(f'echo "{sudo_password}" | sudo -S sudo qemu-system-x86_64 -name qvm{vm_id} -smbios type=0,uefi=on -smp 2 -m 4096 -hda /home/speedlab-ml-3/qvm{vm_id}.qcow2 -boot c -netdev bridge,br=br0,id=net0 -device e1000,netdev=net0,mac=52:54:00:12:43:{vm_id:02x} -vnc 0.0.0.0:{vm_id}')
 
 
     def shutdown_vm(self, vm_id: int) -> None:
@@ -567,21 +572,18 @@ class WazuhInterface:
         # Create and start vms.
         running_vms = len(self.list_vm())
         log.msg(f'Found {running_vms} running vm.')
-        log.msg(3)
         if running_vms < self.vm_size:
             create_vm_size = self.vm_size - running_vms
             log.msg(f'Created {create_vm_size} vm.')
-            log.msg(1)
             for i in range(create_vm_size):
                 self.create_vm(running_vms + i)
-                log.msg(2)
 
         # Check vms are booting.
         while True:
             pids = self.list_vm()
             log.msg(f'Waiting for all vm power on {len(pids)}/{self.vm_size} ...')
 
-            if len(pids) == self.vm_size:
+            if len(pids) == 2 * self.vm_size:
                 break
 
             sleep(0.5)
